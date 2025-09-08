@@ -12,6 +12,9 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <style>
+/* Chip สีม่วงสำหรับสรุปเวลาเดือนนี้ */
+.chip--info{ background:#8b5cf6; color:#fff; font-weight:600; }
+
     :root{ --bg:#f8fafc; --ink:#0f172a; --muted:#5e6e85; --card:#fff; --shadow:0 1px 6px rgba(2,6,23,.06); --grid:rgba(15,23,42,.06); }
     body{ background:var(--bg); color:var(--ink) }
     main{ max-width:min(96vw,1860px); margin:0 auto; padding:16px 20px }
@@ -57,7 +60,7 @@
   <section class="flex items-center justify-between gap-3">
     <div>
       <h1 class="text-4xl font-bold text-blue-900">🛠️ รายงานซ่อม </h1>
-      <p class="subtle">อัปเดต วัน/เดือน/ปี เวลา <span id="lastUpdated">กำลังโหลด…</span></p>
+      <p class="subtle">อัปเดตอัตโนมัติ วัน/เดือน/ปี เวลา <span id="lastUpdated">กำลังโหลด…</span></p>
     </div>
     <!-- Tabs + Auto -->
     <div class="flex items-center gap-3">
@@ -91,7 +94,7 @@
 
     <div class="col-span-12 md:col-span-9 space-y-3">
       <div class="col-span-12 md:col-span-12 flex justify-end items-center">
-        <h2 id="headline" class="font-bold text-xl md:text-2xl text-blue-800"></h2>
+        <h2 id="headline" class="font-bold text-xl md:text-2xl text-blue-800"></h2><span id="monthHoursChip" class="chip chip--info hidden"></span>
       </div>
 
       <section class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -412,9 +415,31 @@ function renderStatusChart(){
         font:{weight:'700'}, color:'#0f172a' }, centerTotal:{ }, tooltip:{enabled:true} } });
 }
 function renderHeadlineSummary(){
-  const now=new Date(); const sameDay=d=>d&&d.getDate()===now.getDate()&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
-  const todays=State.rows.filter(r=>sameDay(r.date)); const total=todays.length; const done=todays.filter(r=>r.status==='completed').length; const pct= total? Math.round(done/total*100) : 0;
-  document.getElementById('headline').textContent=`วันนี้มี ${total} งาน / เสร็จแล้ว ${done} งาน (${pct}%)`;
+  const now = new Date();
+  const sameDay = d => d && d.getDate()===now.getDate() && d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+
+  // headline วันนี้
+  const todays = State.rows.filter(r => sameDay(r.date));
+  const total = todays.length;
+  const done  = todays.filter(r => r.status==='completed').length;
+  const pct   = total ? Math.round(done/total*100) : 0;
+  const h2 = document.getElementById('headline');
+  if (h2){ h2.textContent = `วันนี้มี ${total} งาน / เสร็จแล้ว ${done} งาน (${pct}%)`; }
+
+  // รวมเวลาเดือนนี้
+  const mk = monthKey(new Date());
+  const minsList = State.rows
+    .filter(r => r.month===mk && r.totalRepairMin!=null && !isNaN(r.totalRepairMin))
+    .map(r => r.totalRepairMin);
+  const sumMin = minsList.reduce((a,b)=>a+b, 0);
+  const sumHr  = sumMin / 60;
+  const hrText = `${(+sumHr.toFixed(1))} ชม. (~${hoursToHM(sumHr)})`;
+
+  const chip = document.getElementById('monthHoursChip');
+  if (chip){
+    chip.textContent = `รวมเวลาเดือนนี้ ${hrText}`;
+    chip.classList.remove('hidden');
+  }
 }
 function renderMachineChart(){
   const rows=State.rows.filter(r=>r.machineCode); const by=groupBy(rows,r=>r.machineCode);
