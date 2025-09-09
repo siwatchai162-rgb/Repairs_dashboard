@@ -15,7 +15,7 @@
 /* Chip สีม่วงสำหรับสรุปเวลาเดือนนี้ */
 .chip--info{ background:#8b5cf6; color:#fff; font-weight:600; }
 
-    :root{ --bg:#f8fafc; --ink:#0f172a; --muted:#5e6e85; --card:#fff; --shadow:0 1px 6px rgba(2,6,23,.06); --grid:rgba(15,23,42,.06); }
+    :root{ --bg:#f8fafc; --ink:#0f172a; --muted:#5e6e85; --card:#fff; --shadow:0 1px 6px rgba(89, 95, 122, 0.06); --grid:rgba(15,23,42,.06); }
     body{ background:var(--bg); color:var(--ink) }
     main{ max-width:min(96vw,1860px); margin:0 auto; padding:16px 20px }
     h1{ font-size:22px; font-weight:700 }
@@ -59,8 +59,8 @@
   <!-- HEADER -->
   <section class="flex items-center justify-between gap-3">
     <div>
-      <h1 class="text-4xl font-bold text-blue-900">🛠️ รายงานซ่อม </h1>
-      <p class="subtle">อัปเดตอัตโนมัติ วัน/เดือน/ปี เวลา <span id="lastUpdated">กำลังโหลด…</span></p>
+      <h1 class="text-4xl font-bold text-blue-900">🛠️ แดชบอร์ดงานซ่อม 修理ダッシュボード </h1>
+      <p class="subtle">อัปเดต วัน/เดือน/ปี เวลา <span id="lastUpdated">กำลังโหลด…</span></p>
     </div>
     <!-- Tabs + Auto -->
     <div class="flex items-center gap-3">
@@ -73,8 +73,8 @@
         <input id="secMonthly" type="number" min="3" step="1" value="20" />
       </div>
       <div class="flex items-center gap-2">
-        <button id="tabCharts" class="tab-btn tab-active">กราฟสรุปรายเดือน</button>
-        <button id="tabMonthly" class="tab-btn tab-inactive">กราฟสรุปรายปี</button>
+        <button id="tabCharts" class="tab-btn tab-active">กราฟสรุปรายเดือน 月次サマリーグラフ</button>
+        <button id="tabMonthly" class="tab-btn tab-inactive">กราฟสรุปรายปี 年次サマリーグラフ</button>
       </div>
     </div>
   </section>
@@ -83,11 +83,11 @@
   <section id="pageCharts" class="grid grid-cols-12 gap-3">
     <aside class="col-span-12 md:col-span-3 space-y-3">
       <div class="card">
-        <h3 class="font-semibold text-sm mb-2">รายการล่าสุดที่แจ้งซ่อม</h3>
+        <h3 class="font-semibold text-sm mb-2">รายการล่าสุดที่แจ้งซ่อม 最新修理依頼</h3>
         <div id="latestList" class="space-y-2"><div class="subtle">กำลังโหลด…</div></div>
       </div>
       <div class="card hidden">
-        <h3 class="font-semibold text-sm mb-2">งานล่าสุดที่ยังไม่ completed</h3>
+        <h3 class="font-semibold text-sm mb-2">งานล่าสุดที่ยังไม่ completed修理未完了</h3>
         <div id="latestPending" class="space-y-2"></div>
       </div>
     </aside>
@@ -99,38 +99,38 @@
 
       <section class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">สัดส่วนสถานะงาน</h3>
+          <h3 class="font-semibold text-sm mb-1">สัดส่วนสถานะงาน 進捗率</h3>
           <canvas id="statusChart"></canvas>
           <div class="flex gap-1 mt-2 text-xs">
             <span class="chip" id="completedChip">completed: 0</span>
-            <span class="chip" id="pendingChip">pending: 0</span>
+            <span class="chip" id="pendingChip">pending : 0</span>
           </div>
         </div>
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">จำนวนแจ้งซ่อมตาม MachineCode (Top 15)</h3>
+          <h3 class="font-semibold text-sm mb-1">จำนวนแจ้งซ่อมตาม MachineCode  設備コードごとの修理件数 (Top 15)</h3>
           <canvas id="machineChart"></canvas>
         </div>
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">เครื่องจักรที่แจ้งซ่อมบ่อย (Top 10)</h3>
+          <h3 class="font-semibold text-sm mb-1">เครื่องจักรที่แจ้งซ่อมบ่อย (Top 10) 修理頻度の高い設備</h3>
           <canvas id="machineNameChart"></canvas>
         </div>
       </section>
 
       <section class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">แนวโน้มการแจ้งซ่อม (รายวัน – เดือนปัจจุบัน)</h3>
+          <h3 class="font-semibold text-sm mb-1">แนวโน้มการแจ้งซ่อม (รายวัน – เดือนปัจจุบัน) 修理依頼の傾向 日々</h3>
           <canvas id="trendChart"></canvas>
         </div>
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">เวลาแก้ไขรวมต่อวัน (ชั่วโมง) – เดือนปัจจุบัน</h3>
+          <h3 class="font-semibold text-sm mb-1">เวลาแก้ไขรวมต่อวัน (ชั่วโมง) – เดือนปัจจุบัน 日々修理平均時間(分)</h3>
           <canvas id="mttrChart"></canvas>
         </div>
         <div class="card md:row-span-2">
-          <h3 class="font-semibold text-sm mb-1">เครื่องจักรที่แจ้งซ่อมบ่อย (Top 5)</h3>
+          <h3 class="font-semibold text-sm mb-1">เครื่องจักรที่แจ้งซ่อมบ่อย  修理頻度の高い設備 (Top 5)</h3>
           <div id="topMachineList" class="space-y-2"><div class="subtle">กำลังโหลด…</div></div>
         </div>
         <div class="card md:col-span-2">
-          <h3 class="font-semibold text-sm mb-1">ปัญหาซ้ำบ่อย (Top 10)</h3>
+          <h3 class="font-semibold text-sm mb-1">ปัญหาซ้ำบ่อย  発生頻度の高い不具合(Top 10)</h3>
           <canvas id="problemChart"></canvas>
         </div>
       </section>
@@ -140,16 +140,16 @@
   <!-- Monthly page -->
   <section id="pageMonthly" style="display:none">
     <div class="card">
-      <h3 class="font-semibold text-lg mb-2">สรุปรายเดือน (รวมทุกข้อมูล)</h3>
+      <h3 class="font-semibold text-lg mb-2">สรุปรายเดือน (รวมทุกข้อมูล) げつじ サマリー／ぜんデータ</h3>
 
       <!-- monthly charts -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">แนวโน้มจำนวนแจ้งซ่อมแต่ละเดือน (ปีปัจจุบัน)</h3>
+          <h3 class="font-semibold text-sm mb-1">แนวโน้มจำนวนแจ้งซ่อมแต่ละเดือน (ปีปัจจุบัน) 本年の月別修理依頼件数の推移</h3>
           <canvas id="monthlyTotalLine"></canvas>
         </div>
         <div class="card">
-          <h3 class="font-semibold text-sm mb-1">รวมเวลา (ชม.) ในการซ่อม (รายเดือน)</h3>
+          <h3 class="font-semibold text-sm mb-1">รวมเวลา (ชม.) ในการซ่อม (รายเดือน) 月次修理合計時間（h）</h3>
           <canvas id="monthlyHoursLine"></canvas>
         </div>
       </div>
@@ -158,8 +158,8 @@
         <table class="t" id="monthlyTable">
           <thead>
             <tr>
-              <th>เดือน</th><th>จำนวนทั้งหมด</th><th>Completed</th><th>Pending</th>
-              <th>% Completed</th><th>รวมเวลา (ชม.)</th><th>Top Machine</th><th>Top ปัญหา</th>
+              <th>เดือน 月 </th><th>จำนวนทั้งหมด 合計金額</th><th>Completed 完了済み </th><th>Pending 確認待ち</th>
+              <th>% Completed 完了済み</th><th>รวมเวลา (ชม.) 合計時間（h）</th><th>Top Machine 機械 </th><th>Top ปัญหา もんだい</th>
             </tr>
           </thead>
           <tbody><tr><td colspan="8" class="py-6 text-center text-slate-500">กำลังคำนวณ…</td></tr></tbody>
@@ -279,7 +279,7 @@ function detectColumns(headers){
   idx.status = find(/(status|สถานะ)/i, idx.status);
   idx.machineCode = find(/(machine\\s*code|machinecode|code|รหัสเครื่อง)/i, idx.machineCode);
   idx.machineName = find(/(machine\\s*name|machinename|ชื่อเครื่อง|เครื่องจักร)/i, idx.machineName);
-  idx.reporter = find(/(reporter|ผู้แจ้ง)/i, idx.reporter);
+  idx.reporter = find(/(reporter|ผู้แจ้ง 情報提供者)/i, idx.reporter);
   idx.problem = find(/(problem|issue|อาการ|ปัญหา)/i, idx.problem);
   idx.totalRepairTime = find(/(total\\s*repair\\s*time|repair\\s*time|เวลาซ่อม|รวมเวลา)/i, idx.totalRepairTime);
   return idx;
@@ -393,7 +393,7 @@ const CenterTotalPlugin={id:'centerTotal',afterDatasetsDraw(chart){
   const {ctx,chartArea:{left,right,top,bottom}}=chart;
   const x=(left+right)/2, y=(top+bottom)/2;
   ctx.save(); ctx.fillStyle='#0f172a'; ctx.font='700 18px sans-serif';
-  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(`${total} งาน`,x,y); ctx.restore();
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(`${total} งาน 件`,x,y); ctx.restore();
 }};
 Chart.register(ChartDataLabels,CenterTotalPlugin);
 
@@ -424,7 +424,7 @@ function renderHeadlineSummary(){
   const done  = todays.filter(r => r.status==='completed').length;
   const pct   = total ? Math.round(done/total*100) : 0;
   const h2 = document.getElementById('headline');
-  if (h2){ h2.textContent = `วันนี้มี ${total} งาน / เสร็จแล้ว ${done} งาน (${pct}%)`; }
+  if (h2){ h2.textContent = `วันนี้มี 今日 ${total} งาน 件 / เสร็จแล้ว 終了した ${done} งาน 件 (${pct}%)`; }
 
   // รวมเวลาเดือนนี้
   const mk = monthKey(new Date());
@@ -445,7 +445,7 @@ function renderMachineChart(){
   const rows=State.rows.filter(r=>r.machineCode); const by=groupBy(rows,r=>r.machineCode);
   const pairs=Object.entries(by).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]).slice(0,15);
   const labels=pairs.map(p=>p[0]); const values=pairs.map(p=>p[1]);
-  ensureChart('machineChart','machine',{ type:'line', data:{ labels, datasets:[{ label:'จำนวนแจ้งซ่อม', data:values, borderColor:'#06b6d4', backgroundColor:hexToRgba('#06b6d4',.18), fill:true, tension:.35, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:'#06b6d4', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
+  ensureChart('machineChart','machine',{ type:'line', data:{ labels, datasets:[{ label:'จำนวนแจ้งซ่อม 修理依頼件数', data:values, borderColor:'#06b6d4', backgroundColor:hexToRgba('#06b6d4',.18), fill:true, tension:.35, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:'#06b6d4', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
     { plugins:{ legend:{ position:'bottom' }, datalabels:{ display:true, anchor:'end', align:'top', offset:-4, clamp:true, clip:false, formatter:v=>`${v}`, font:{ weight:'700' }, color:'#0f172a' } }, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:'rgba(15,23,42,.06)' } }, x:{ grid:{ color:'rgba(15,23,42,.06)' } } },
       layout:{ padding:{ top:16 } } });
 }
@@ -455,14 +455,14 @@ function renderMachineNameChart(){
   const labels=pairs.map(p=>p[0]); const values=pairs.map(p=>p[1]);
   const colors=COLORS.cat.slice(0,values.length);
   ensureChart('machineNameChart','machineName',{ type:'bar', data:{ labels, datasets:[{ label:'จำนวนแจ้งซ่อม', data:values, backgroundColor:colors.map(c=>hexToRgba(c,.35)), borderColor:colors, hoverBackgroundColor:colors.map(c=>hexToRgba(c,.6)), borderWidth:1.5, borderRadius:12, barThickness:18, maxBarThickness:22 }] } },
-    { indexAxis:'y', plugins:{ legend:{ display:false }, datalabels:{ anchor:'end', align:'right', offset:1, formatter:v=>`${v} ครั้ง`, backgroundColor:'rgba(255,255,255,.8)', color:'#0f172a', borderRadius:999 } },
+    { indexAxis:'y', plugins:{ legend:{ display:false }, datalabels:{ anchor:'end', align:'right', offset:1, formatter:v=>`${v} ครั้ง回`, backgroundColor:'rgba(255,255,255,.8)', color:'#0f172a', borderRadius:999 } },
       scales:{ x:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:'rgba(15,23,42,.06)' } }, y:{ grid:{ display:false }, ticks:{ autoSkip:false, maxTicksLimit:labels.length, padding:6, font:{ size:12, weight:'600' } } } },
       layout:{ padding:{ left:14, right:6, top:16 } } });
 }
 function renderTrendChart(){
   const mk=monthKey(new Date()); const rows=State.rows.filter(r=>r.month===mk&&r.day); const by=groupBy(rows,r=>r.day);
   const days=Object.keys(by).sort((a,b)=>+a-+b); const values=days.map(d=>by[d].length);
-  ensureChart('trendChart','trend',{ type:'line', data:{ labels:days, datasets:[{ label:'รายวัน', data:values, borderColor:'#3b82f6', backgroundColor:hexToRgba('#3b82f6',.18), fill:true, tension:.35, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:'#3b82f6', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
+  ensureChart('trendChart','trend',{ type:'line', data:{ labels:days, datasets:[{ label:'รายวัน 毎日', data:values, borderColor:'#3b82f6', backgroundColor:hexToRgba('#3b82f6',.18), fill:true, tension:.35, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:'#3b82f6', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
     { plugins:{ legend:{ position:'bottom' }, datalabels:{ display:true, anchor:'end', align:'top', offset:-6, clamp:true, clip:false, formatter:v=>`${v}`, font:{ weight:'700' }, color:'#0f172a' } },
       scales:{ y:{ beginAtZero:true, ticks:{ precision:0 }, grid:{ color:'rgba(15,23,42,.06)' } }, x:{ grid:{ color:'rgba(15,23,42,.06)' } } },
       layout:{ padding:{ top:18 } } });
@@ -472,7 +472,7 @@ function renderMttrChart(){
   const days=Object.keys(by).sort((a,b)=>+a-+b);
   const sumsMin=days.map(d=>{ const list=by[d].map(x=>x.totalRepairMin).filter(v=>!isNaN(v)); return list.length?list.reduce((a,b)=>a+b,0):0; });
   const sumsHr=sumsMin.map(m=>+(m/60).toFixed(1));
-  ensureChart('mttrChart','mttr',{ type:'line', data:{ labels:days, datasets:[{ label:'รวม/วัน (ชม.)', data:sumsHr, borderColor:'#8b5cf6', backgroundColor:hexToRgba('#8b5cf6',.18), fill:true, tension:.35, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:'#8b5cf6', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
+  ensureChart('mttrChart','mttr',{ type:'line', data:{ labels:days, datasets:[{ label:'รวม/วัน (ชม.)日別合計（時間）', data:sumsHr, borderColor:'#8b5cf6', backgroundColor:hexToRgba('#8b5cf6',.18), fill:true, tension:.35, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:'#8b5cf6', pointBorderColor:'#fff', pointBorderWidth:2 }] } },
     { plugins:{ legend:{position:'bottom'}, datalabels:{display:true, anchor:'end', align:'top', offset:-6, formatter:v=>`${v}`, color:'#0f172a', clamp:true, clip:false} },
       scales:{ y:{ beginAtZero:true, grid:{color:'rgba(15,23,42,.06)'} }, x:{ grid:{color:'rgba(15,23,42,.06)'} } },
       layout:{ padding:{ top:18 } } });
@@ -488,14 +488,14 @@ function renderTopMachineList(){
   const pairs=Object.entries(byCode).map(([code,list])=>{ const nameGroups=groupBy(list.filter(x=>x.machineName),x=>x.machineName); const topName=Object.entries(nameGroups).sort((a,b)=>b[1].length-a[1].length)[0]?.[0]||'-'; return {code,name:topName,count:list.length}; }).sort((a,b)=>b.count-a.count).slice(0,5);
   const el=document.getElementById('topMachineList'); if(!el) return;
   if(!pairs.length){ el.innerHTML=`<div class="subtle">ไม่พบข้อมูล</div>`; return; }
-  el.innerHTML=pairs.map((p,i)=>`<div class="item"><div class="badge">${String(i+1).padStart(2,'0')}</div><div class="flex-1"><div class="title">${p.code} • ${p.name}</div><div class="meta">จำนวนที่แจ้งซ่อม: ${p.count} ครั้ง</div></div></div>`).join('');
+  el.innerHTML=pairs.map((p,i)=>`<div class="item"><div class="badge">${String(i+1).padStart(2,'0')}</div><div class="flex-1"><div class="title">${p.code} • ${p.name}</div><div class="meta">จำนวนแจ้งซ่อม 修理依頼件数: ${p.count} ครั้ง 回</div></div></div>`).join('');
 }
 /* Latest list */
 function listItemHTML(r,index){
   const statusChip=r.status==='completed'?`<span class="chip chip--ok">completed</span>`:`<span class="chip chip--warn">${r.status||'unknown'}</span>`;
   const mc=r.machineCode||'-', mn=r.machineName||'-', prob=r.problem||'-';
   const when=r.date?thaiDateTime(r.date):'-', reporter=r.reporter||'-';
-  return `<div class="item"><div class="badge">${String(index).padStart(2,'0')}</div><div class="flex-1"><div class="flex items-center justify-between gap-2"><div class="title truncate min-w-0 max-w-[75%]" title="${mc} • ${mn}">${mc} • ${mn}</div><span class="shrink-0">${statusChip}</span></div><div class="meta mt-0.5">ผู้แจ้ง: ${reporter} • ${when}</div><div class="mt-1 text-sm">${prob}</div></div></div>`;
+  return `<div class="item"><div class="badge">${String(index).padStart(2,'0')}</div><div class="flex-1"><div class="flex items-center justify-between gap-2"><div class="title truncate min-w-0 max-w-[75%]" title="${mc} • ${mn}">${mc} • ${mn}</div><span class="shrink-0">${statusChip}</span></div><div class="meta mt-0.5">ผู้แจ้ง 情報提供者: ${reporter} • ${when}</div><div class="mt-1 text-sm">${prob}</div></div></div>`;
 }
 function renderLatestList(){
   const el=document.getElementById('latestList');
